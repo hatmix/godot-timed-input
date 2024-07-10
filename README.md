@@ -1,6 +1,6 @@
 # TimedInput for Godot
 
-![TimedInput Icon](addons/timed_input/icon.svg)
+![TimedInput Icon](addons/timed_input/icon.svg | width=320)
 
 Adds a node type that monitors an input action for long holds, short taps and multiple taps. Can emit signals or send InputEventActions. Which events are monitored and what is done in response are configurable.
 
