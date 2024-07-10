@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl4ifkl2i8at5"]
+
+[ext_resource type="Script" path="res://demo/signal_scroll_entry.gd" id="1_ybbt4"]
+
+[node name="SignalScrollEntry" type="Label"]
+modulate = Color(0.929412, 0.745098, 0, 1)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -56.0
+offset_right = 56.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Signal (param)"
+script = ExtResource("1_ybbt4")

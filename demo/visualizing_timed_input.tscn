@@ -1,0 +1,170 @@
+[gd_scene load_steps=5 format=3 uid="uid://ci8h1jt2cssch"]
+
+[ext_resource type="Script" path="res://demo/visualizing_timed_input.gd" id="1_ouoq8"]
+[ext_resource type="Script" path="res://addons/TimedInput/timed_input.gd" id="2_rqkx7"]
+[ext_resource type="PackedScene" uid="uid://bl4ifkl2i8at5" path="res://demo/signal_scroll_entry.tscn" id="3_scq5x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l3h73"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.169245, 0.169245, 0.169245, 1)
+
+[node name="VisualizingTimedInput" type="CanvasLayer"]
+script = ExtResource("1_ouoq8")
+
+[node name="TimedInput" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_rqkx7")
+action = "ui_accept"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Use [SPACE] (ui_accept) for TimedInput Demo"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ProcessTap" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Process Tap"
+
+[node name="ProcessMultitap" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Process Multitap"
+
+[node name="ProcessHold" type="CheckButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Process Hold"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Released Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Released Time"
+
+[node name="ReleasedTime" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Released Time"
+horizontal_alignment = 1
+
+[node name="TimeoutLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "> Multitap Timeout"
+horizontal_alignment = 2
+
+[node name="ReleasedTimeProgress" type="ProgressBar" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+max_value = 10.0
+allow_greater = true
+show_percentage = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Hold Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Hold Time"
+
+[node name="HoldTime" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hold Time"
+horizontal_alignment = 1
+
+[node name="DelayLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "> Hold Delay"
+horizontal_alignment = 2
+
+[node name="HoldTimeProgress" type="ProgressBar" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+max_value = 2.0
+allow_greater = true
+show_percentage = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Hold Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Holding Signal"
+
+[node name="HoldSignalTime" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hold Time"
+horizontal_alignment = 1
+
+[node name="DelayLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="HoldSignalTimeProgress" type="ProgressBar" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+max_value = 2.0
+allow_greater = true
+show_percentage = false
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Signals (except holding):"
+
+[node name="Label2" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Clear" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Clear "
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_l3h73")
+
+[node name="SignalScroll" type="VBoxContainer" parent="CenterContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SignalScrollEntry" parent="CenterContainer/VBoxContainer/ScrollContainer/SignalScroll" instance=ExtResource("3_scq5x")]
+layout_mode = 2

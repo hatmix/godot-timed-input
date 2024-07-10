@@ -1,6 +1,5 @@
 .import/
 .DS_Store
-*.import
 *.mkv
 *.mp4
 .godot/*
