@@ -7,6 +7,7 @@
 .justfile
 addons/*
 !addons/gd-plug/
+!addons/timed_input/
 
 # Godot export directories based on export_presets.cfg
 exports/*

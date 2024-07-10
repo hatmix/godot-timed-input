@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ci8h1jt2cssch"]
 
 [ext_resource type="Script" path="res://demo/visualizing_timed_input.gd" id="1_ouoq8"]
-[ext_resource type="Script" path="res://addons/TimedInput/timed_input.gd" id="2_rqkx7"]
+[ext_resource type="Script" path="res://addons/timed_input/timed_input.gd" id="2_rqkx7"]
 [ext_resource type="PackedScene" uid="uid://bl4ifkl2i8at5" path="res://demo/signal_scroll_entry.tscn" id="3_scq5x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l3h73"]
