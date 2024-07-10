@@ -1,0 +1,121 @@
+name: "godot-ci"
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '!ATTRIBUTION.md'
+      - '.gitignore'
+      - '.gitattributes'
+  workflow_dispatch:
+    inputs:
+      exporttype:
+        description: 'Export type (debug/release)'
+        default: debug
+        required: false
+        type: choice
+        options:
+          - debug
+          - release
+
+concurrency:
+  group: there-can-be-only-one
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.2.2
+  PROJECT_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  test-and-export:
+    name: Test and Export
+    runs-on: ubuntu-20.04
+    container:
+      image: barichello/godot-ci:4.2.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup Export Templates
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates
+          # 4.2
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          # 4.1
+          #ls /root/.local/share/godot/templates/
+          #mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+
+      - name: Install Plugins
+        run: |
+          godot --headless --path . -s plug.gd install || true
+
+      - name: Fix Imports
+        run: |
+          godot --headless --path . --export-pack FixImports /dev/null 2>&1 >/dev/null
+
+      - name: Test
+        id: test
+        run: |
+          godot --headless --path . -s addons/gut/gut_cmdln.gd -gexit
+
+      - name: Remove Dev-only Plugins
+        run: |
+          godot --headless --path . -s plug.gd install production || true
+
+      - name: Export
+        id: export
+        env:
+          ITCHIO_USERNAME: ${{ secrets.ITCHIO_USERNAME }}
+          ITCHIO_GAME: ${{ secrets.ITCHIO_GAME }}
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          EXPORT_TYPE_INPUT: ${{ github.event.inputs.exporttype }}
+        if: steps.test.outcome == 'success' && env.ITCHIO_USERNAME && env.ITCHIO_GAME && env.BUTLER_API_KEY
+        run: |
+          EXPORT_TYPE="${EXPORT_TYPE_INPUT:=debug}"
+          echo export $EXPORT_TYPE
+          godot --headless --path . --export-${EXPORT_TYPE} "Web" exports/web/index.html
+          godot --headless --path . --export-${EXPORT_TYPE} "Linux" exports/linux/${ITCHIO_GAME}.x86_64
+          godot --headless --path . --export-${EXPORT_TYPE} "macOS" exports/macos/${ITCHIO_GAME}.zip
+          godot --headless --path . --export-${EXPORT_TYPE} "Windows" exports/windows/${ITCHIO_GAME}.exe
+          #find exports -name '*'
+
+      - name: Cache butler files
+        id: cache-butler
+        if: steps.export.outcome == 'success'
+        uses: actions/cache@v4
+        with:
+          path: butler
+          key: ${{ runner.os }}-butler
+
+      - name: Download Butler
+        env:
+          ITCHIO_USERNAME: ${{ secrets.ITCHIO_USERNAME }}
+          ITCHIO_GAME: ${{ secrets.ITCHIO_GAME }}
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        if: steps.cache-butler.outputs.cache-hit != 'true' && steps.export.outcome == 'success'
+        run: |
+          wget -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
+      - name: Butler Push
+        env:
+          ITCHIO_USERNAME: ${{ secrets.ITCHIO_USERNAME }}
+          ITCHIO_GAME: ${{ secrets.ITCHIO_GAME }}
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        if: steps.export.outcome == 'success' && env.ITCHIO_USERNAME && env.ITCHIO_GAME && env.BUTLER_API_KEY
+        run: |
+          if [ -f exports/web/index.html ]; then
+            ./butler push exports/web/ ${ITCHIO_USERNAME}/${ITCHIO_GAME}:HTML5
+          fi
+          if [ -f exports/linux/${ITCHIO_GAME}.x86_64 ]; then
+            ./butler push exports/windows/ ${ITCHIO_USERNAME}/${ITCHIO_GAME}:linux
+          fi
+          if [ -f exports/macos/${ITCHIO_GAME}.zip ]; then
+            ./butler push exports/windows/ ${ITCHIO_USERNAME}/${ITCHIO_GAME}:macos
+          fi
+          if [ -f exports/windows/${ITCHIO_GAME}.exe ]; then
+            ./butler push exports/windows/ ${ITCHIO_USERNAME}/${ITCHIO_GAME}:windows
+          fi
