@@ -4,7 +4,9 @@
 
 Adds a node type that monitors an input action for long holds, short taps and multiple taps. Can emit signals or send InputEventActions. Which events are monitored and what is done in response are configurable.
 
-The included demo covers much of the functionality of the addon.
+The included demo covers much of the functionality of the addon. Try out the demo at https://hatmix.itch.io/godot-timed-input 
+
+![Demo App Screenshot](media/demo_app_screenshot.png)
 
 ## TimedInput types
 
