@@ -8,6 +8,8 @@ The included demo covers much of the functionality of the addon. Try out the dem
 
 ![Demo App Screenshot](media/demo_app_screenshot.png)
 
+(Feb 2025 update) I probably won't be maintaining this addon and will use [G.U.I.D.E](https://github.com/godotneers/G.U.I.D.E) instead.
+
 ## TimedInput types
 
 <dl>
