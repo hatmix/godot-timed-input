@@ -28,7 +28,7 @@ env:
 jobs:
   test-and-export:
     name: Test and Export
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
       image: barichello/godot-ci:4.5
     steps:
