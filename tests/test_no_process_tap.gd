@@ -20,13 +20,13 @@ func test_tap():
 
 func test_multitap():
 	multitap_key()
-	await wait_for_signal(timed_input_action.multitapped, multitap_timeout * 1.2)
+	await wait_for_signal(timed_input_action.multitapped, multitap_timeout + .1)
 	assert_only_signals(["multitapped"])
 	assert_signal_emit_count(timed_input_action, "multitapped", 1)
 
 
 func test_multitap_timeout():
-	multitap_key(multitap_timeout * 1.2)
+	multitap_key(multitap_timeout + .1)
 	await get_tree().create_timer(0.5).timeout
 	assert_only_signals([])  # assert no TIA signals sent
 

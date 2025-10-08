@@ -8,7 +8,7 @@ var signal_entry = load("res://demo/signal_scroll_entry.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	%TimeoutLabel.self_modulate = MULTITAP_TIMEOUT_COLOR
 	%DelayLabel.self_modulate = HOLD_DELAY_COLOR
 	%TimedInput.tapped.connect(_on_tapped)
@@ -30,11 +30,11 @@ func _ready():
 	%ProcessHold.pressed.connect(func(): %TimedInput.process_hold = %ProcessHold.button_pressed)
 
 
-func _physics_process(delta):
+func _physics_process(_delta) -> void:
 	update_timer_ui()
 
 
-func add_signal_entry(signal_name, param = null):
+func add_signal_entry(signal_name, param = null) -> void:
 	var entry = signal_entry.instantiate()
 	entry.visible = false
 	entry.set_signal_text(signal_name, param)
@@ -47,44 +47,44 @@ func add_signal_entry(signal_name, param = null):
 #func _on_process_tap_button_pressed() -> void:
 
 
-func _clear_scroll():
+func _clear_scroll() -> void:
 	for child in %SignalScroll.get_children():
 		child.free()
 	%Clear.release_focus()
 
 
-func _on_scrollbar_changed():
+func _on_scrollbar_changed() -> void:
 	var scrollbar: VScrollBar = %ScrollContainer.get_v_scroll_bar()
 	%ScrollContainer.scroll_vertical = scrollbar.max_value
 
 
-func _on_tapped(duration):
+func _on_tapped(duration) -> void:
 	add_signal_entry("Tapped", duration)
 
 
-func _on_multitapped(count):
+func _on_multitapped(count) -> void:
 	add_signal_entry("Multiapped", count)
 
 
-func _on_hold_started():
+func _on_hold_started() -> void:
 	add_signal_entry("Hold Started")
 
 
-func _on_hold_finished(duration):
+func _on_hold_finished(duration) -> void:
 	add_signal_entry("Hold Finished", duration)
 
 
-func _on_holding(duration):
+func _on_holding(duration) -> void:
 	%HoldSignalTime.text = time_format_string % duration
 	%HoldSignalTimeProgress.value = duration
 
 
-func update_action_timeouts():
+func update_action_timeouts() -> void:
 	%ReleasedTimeProgress.max_value = 2 * %TimedInput.ACTION_MULTITAP_TIMEOUT
 	%HoldTimeProgress.max_value = 2 * %TimedInput.ACTION_HOLD_DELAY
 
 
-func update_timer_ui():
+func update_timer_ui() -> void:
 	var released_time = %TimedInput.released_time
 	%ReleasedTime.text = time_format_string % released_time
 	%ReleasedTimeProgress.value = released_time

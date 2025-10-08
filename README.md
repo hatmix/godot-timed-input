@@ -66,6 +66,7 @@ Note that events are experimental and more likely to receive breaking changes.
 This addon grew out of coding my entry for the [1-Button Jam](https://itch.io/jam/1-button-jam-2023), [OBMG (One Button Mini-Golf)](https://hatmix.itch.io/OBMG).
 
 ## Attribution
+* [Godot Engine and icon](https://godotengine.org/license/)
 * [imjp94/gd-plug](https://github.com/imjp94/gd-plug) used for plugin management
 * [bitwes/GUT](https://github.com/bitwes/Gut) used for testing
 * Stopwatch icon made by Lorc. Available at [game-icons.net](https://game-icons.net/1x1/lorc/stopwatch.html).

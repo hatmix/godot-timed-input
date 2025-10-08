@@ -28,9 +28,9 @@ func test_multitap():
 
 
 func test_multitap_timeout():
-	multitap_key(multitap_timeout * 1.2)
-	await wait_for_signal(timed_input_action.tapped, multitap_timeout * 1.2)
-	await wait_for_signal(timed_input_action.tapped, multitap_timeout * 1.2)
+	multitap_key(multitap_timeout + .1)
+	await wait_for_signal(timed_input_action.tapped, multitap_timeout + .1)
+	await wait_for_signal(timed_input_action.tapped, multitap_timeout + .1)
 	assert_only_signals(["tapped"])
 	assert_signal_emit_count(timed_input_action, "tapped", 2)
 

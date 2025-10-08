@@ -73,9 +73,9 @@ func multitap_key(
 		pause_between = multitap_timeout / 2
 	print("pause between = " + str(pause_between))
 	tap_key(tap_duration)
-	await Engine.get_main_loop().physics_frame
+	await Engine.get_main_loop().process_frame
 	await get_tree().create_timer(pause_between).timeout
-	await Engine.get_main_loop().physics_frame
+	await Engine.get_main_loop().process_frame
 	tap_key(tap_duration)
 	return _sender
 

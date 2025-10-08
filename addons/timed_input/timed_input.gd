@@ -121,7 +121,7 @@ func send_event(action_name: String, strength: float = 0) -> void:
 	#get_viewport().push_input(event)
 
 
-func action_tap(hold_time: float):
+func action_tap(hold_time: float) -> void:
 	#print("[", Time.get_ticks_msec(), "] ", action, " tap")
 	if process_tap:
 		if send_events:
@@ -130,7 +130,7 @@ func action_tap(hold_time: float):
 			tapped.emit(hold_time)
 
 
-func action_multitap(count: int):
+func action_multitap(count: int) -> void:
 	#print("[", Time.get_ticks_msec(), "] ", action, " multitap ", count)
 	if process_multitap:
 		if send_events:
@@ -139,7 +139,7 @@ func action_multitap(count: int):
 			multitapped.emit(count)
 
 
-func action_hold_started():
+func action_hold_started() -> void:
 	#print("[", Time.get_ticks_msec(), "] ", action, " hold started")
 	if process_hold:
 		if send_events:
@@ -148,7 +148,7 @@ func action_hold_started():
 			hold_started.emit()
 
 
-func action_hold_finished(duration: float):
+func action_hold_finished(duration: float) -> void:
 	#print("[", Time.get_ticks_msec(), "] ", action, " held for ", duration)
 	if process_hold:
 		if send_events:
@@ -157,11 +157,11 @@ func action_hold_finished(duration: float):
 			hold_finished.emit(duration)
 
 
-func _ready():
+func _ready() -> void:
 	pass
 
 
-func _unhandled_input(event):
+func _unhandled_input(event) -> void:
 	# Infinite loop danger without this short-circuit...
 	if event is InputEventAction:
 		#print(event, ", strength: " + str(event.get_strength()))
@@ -195,14 +195,14 @@ func _unhandled_input(event):
 		released_time = 0
 
 
-func _process(delta):
+func _process(delta) -> void:
 	# tests show released_time tends to need higher resolution than hold_time
 	if not is_holding and released_time < MAX_RELEASED_TIME:
 		released_time += delta
 		#print("released time = ", released_time)
 
 
-func _physics_process(delta):
+func _physics_process(delta) -> void:
 	if is_holding and process_hold and hold_time < MAX_HOLD_TIME:
 		hold_time += delta
 		#print("hold time " + str(hold_time))
@@ -211,5 +211,3 @@ func _physics_process(delta):
 			is_hold_started = true
 		if is_hold_started and emit_signals and emit_holding_signal:
 			holding.emit(hold_time)
-
-
